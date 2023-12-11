@@ -1,4 +1,4 @@
-from encrypt import dencrypt_image, get_sha256
+from encrypt import dencrypt_image_v2, get_sha256
 
 import os
 import sys
@@ -281,7 +281,7 @@ class PromptServer():
                     if 'preview' in request.rel_url.query:
                         with Image.open(file) as img:
                             print('preview')
-                            dencrypt_image(img, get_sha256('123'))
+                            dencrypt_image_v2(img, get_sha256('123'))
                             preview_info = request.rel_url.query['preview'].split(';')
                             image_format = preview_info[0]
                             if image_format not in ['webp', 'jpeg'] or 'a' in request.rel_url.query.get('channel', ''):
@@ -308,7 +308,7 @@ class PromptServer():
                     if channel == 'rgb':
                         with Image.open(file) as img:
                             print('rgb')
-                            dencrypt_image(img, get_sha256(123))
+                            dencrypt_image_v2(img, get_sha256(123))
                             if img.mode == "RGBA":
                                 r, g, b, a = img.split()
                                 new_img = Image.merge('RGB', (r, g, b))
@@ -325,7 +325,7 @@ class PromptServer():
                     elif channel == 'a':
                         with Image.open(file) as img:
                             print('a')
-                            dencrypt_image(img, get_sha256(123))
+                            dencrypt_image_v2(img, get_sha256(123))
                             if img.mode == "RGBA":
                                 _, _, _, a = img.split()
                             else:

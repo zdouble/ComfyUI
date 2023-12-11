@@ -1,4 +1,4 @@
-from encrypt import encrypt_image, get_sha256
+from encrypt import encrypt_image_v2, get_sha256
 
 import torch
 
@@ -1373,7 +1373,7 @@ class SaveImage:
                         metadata.add_text(x, json.dumps(extra_pnginfo[x]))
 
             file = f"{filename}_{counter:05}_.png"
-            encrypt_image(img, get_sha256('123'))
+            encrypt_image_v2(img, get_sha256('123'))
             img.save(os.path.join(full_output_folder, file), pnginfo=metadata, compress_level=self.compress_level)
             results.append({
                 "filename": file,
