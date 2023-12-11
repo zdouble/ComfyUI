@@ -280,7 +280,7 @@ class PromptServer():
                 if os.path.isfile(file):
                     if 'preview' in request.rel_url.query:
                         with Image.open(file) as img:
-                            dencrypt_image(img, get_sha256('123'))
+                            # dencrypt_image(img, get_sha256('123'))
                             preview_info = request.rel_url.query['preview'].split(';')
                             image_format = preview_info[0]
                             if image_format not in ['webp', 'jpeg'] or 'a' in request.rel_url.query.get('channel', ''):
