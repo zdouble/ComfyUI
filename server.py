@@ -280,7 +280,8 @@ class PromptServer():
                 if os.path.isfile(file):
                     if 'preview' in request.rel_url.query:
                         with Image.open(file) as img:
-                            # dencrypt_image(img, get_sha256('123'))
+                            print('preview')
+                            dencrypt_image(img, get_sha256('123'))
                             preview_info = request.rel_url.query['preview'].split(';')
                             image_format = preview_info[0]
                             if image_format not in ['webp', 'jpeg'] or 'a' in request.rel_url.query.get('channel', ''):
@@ -306,6 +307,7 @@ class PromptServer():
 
                     if channel == 'rgb':
                         with Image.open(file) as img:
+                            print('rgb')
                             dencrypt_image(img, get_sha256(123))
                             if img.mode == "RGBA":
                                 r, g, b, a = img.split()
@@ -322,6 +324,7 @@ class PromptServer():
 
                     elif channel == 'a':
                         with Image.open(file) as img:
+                            print('a')
                             dencrypt_image(img, get_sha256(123))
                             if img.mode == "RGBA":
                                 _, _, _, a = img.split()
@@ -338,6 +341,7 @@ class PromptServer():
                             return web.Response(body=alpha_buffer.read(), content_type='image/png',
                                                 headers={"Content-Disposition": f"filename=\"{filename}\""})
                     else:
+                        print('else')
                         return web.FileResponse(file, headers={"Content-Disposition": f"filename=\"{filename}\""})
 
             return web.Response(status=404)
