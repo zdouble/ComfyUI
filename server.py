@@ -348,7 +348,7 @@ class PromptServer():
                             img.save(buffer, format='PNG')
                             buffer.seek(0)
 
-                            return web.Response(body=buffer.read(), content_type=f'image/{image_format}',
+                            return web.Response(body=buffer.read(), content_type=f'image/png',
                                                     headers={"Content-Disposition": f"filename=\"{filename}\""})
                         # return web.FileResponse(file, headers={"Content-Disposition": f"filename=\"{filename}\""})
 
