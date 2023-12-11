@@ -1,4 +1,4 @@
-from .encrypt import encrypt_image, get_sha256
+from encrypt import encrypt_image, get_sha256
 
 import torch
 

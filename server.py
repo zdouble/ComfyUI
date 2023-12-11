@@ -1,4 +1,4 @@
-from .encrypt import dencrypt_image, get_sha256
+from encrypt import dencrypt_image, get_sha256
 
 import os
 import sys
