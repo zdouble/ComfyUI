@@ -342,7 +342,15 @@ class PromptServer():
                                                 headers={"Content-Disposition": f"filename=\"{filename}\""})
                     else:
                         print('else')
-                        return web.FileResponse(file, headers={"Content-Disposition": f"filename=\"{filename}\""})
+                        with Image.open(file) as img:
+                            dencrypt_image_v2(img, get_sha256('123'))
+                            buffer = BytesIO()
+                            img.save(buffer, format='PNG')
+                            buffer.seek(0)
+
+                            return web.Response(body=buffer.read(), content_type=f'image/{image_format}',
+                                                    headers={"Content-Disposition": f"filename=\"{filename}\""})
+                        # return web.FileResponse(file, headers={"Content-Disposition": f"filename=\"{filename}\""})
 
             return web.Response(status=404)
 
