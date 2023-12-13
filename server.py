@@ -245,8 +245,8 @@ class PromptServer():
                     with Image.open(file) as original_pil:
                         metadata = PngInfo()
                         # encrypt
-                        # encrypt_image_v2(original_pil, get_sha256('123'))
-                        # metadata.add_text("encrypt", "1")
+                        encrypt_image_v2(original_pil, get_sha256('123'))
+                        metadata.add_text("encrypt", "1")
                         if hasattr(original_pil,'text'):
                             for key in original_pil.text:
                                 metadata.add_text(key, original_pil.text[key])
@@ -289,8 +289,10 @@ class PromptServer():
                     if 'preview' in request.rel_url.query:
                         with Image.open(file) as img:
                             pnginfo = img.info or {}
+                            metadata = PngInfo()
                             if 'encrypt' in pnginfo and pnginfo["encrypt"] == '1':
                                 dencrypt_image_v2(img, get_sha256('123'))
+                                metadata.add_text("encrypt", "1")
                             preview_info = request.rel_url.query['preview'].split(';')
                             image_format = preview_info[0]
                             if image_format not in ['webp', 'jpeg'] or 'a' in request.rel_url.query.get('channel', ''):
@@ -303,7 +305,7 @@ class PromptServer():
                             buffer = BytesIO()
                             if image_format in ['jpeg'] or request.rel_url.query.get('channel', '') == 'rgb':
                                 img = img.convert("RGB")
-                            img.save(buffer, format=image_format, quality=quality)
+                            img.save(buffer, format=image_format, quality=quality, pnginfo=metadata)
                             buffer.seek(0)
 
                             return web.Response(body=buffer.read(), content_type=f'image/{image_format}',
@@ -317,8 +319,10 @@ class PromptServer():
                     if channel == 'rgb':
                         with Image.open(file) as img:
                             pnginfo = img.info or {}
+                            metadata = PngInfo()
                             if 'encrypt' in pnginfo and pnginfo["encrypt"] == '1':
                                 dencrypt_image_v2(img, get_sha256('123'))
+                                metadata.add_text("encrypt", "1")
                             if img.mode == "RGBA":
                                 r, g, b, a = img.split()
                                 new_img = Image.merge('RGB', (r, g, b))
@@ -327,7 +331,7 @@ class PromptServer():
 
                             buffer = BytesIO()
                             
-                            new_img.save(buffer, format='PNG')
+                            new_img.save(buffer, format='PNG', pnginfo=metadata)
                             buffer.seek(0)
                             return web.Response(body=buffer.read(), content_type='image/png',
                                                 headers={"Content-Disposition": f"filename=\"{filename}\""})
@@ -335,8 +339,10 @@ class PromptServer():
                     elif channel == 'a':
                         with Image.open(file) as img:
                             pnginfo = img.info or {}
+                            metadata = PngInfo()
                             if 'encrypt' in pnginfo and pnginfo["encrypt"] == '1':
                                 dencrypt_image_v2(img, get_sha256('123'))
+                                metadata.add_text("encrypt", "1")
                             if img.mode == "RGBA":
                                 _, _, _, a = img.split()
                             else:
@@ -346,7 +352,7 @@ class PromptServer():
                             alpha_img = Image.new('RGBA', img.size)
                             alpha_img.putalpha(a)
                             alpha_buffer = BytesIO()
-                            alpha_img.save(alpha_buffer, format='PNG')
+                            alpha_img.save(alpha_buffer, format='PNG', pnginfo=metadata)
                             alpha_buffer.seek(0)
 
                             return web.Response(body=alpha_buffer.read(), content_type='image/png',
