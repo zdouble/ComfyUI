@@ -336,8 +336,6 @@ class PromptServer():
                                                 headers={"Content-Disposition": f"filename=\"{filename}\""})
                     else:
                         with Image.open(file) as img:
-                            print('img', img)
-                            print('img.format', img.format)
                             pnginfo = img.info or {}
                             metadata = PngInfo()
                             if 'encrypt' in pnginfo and pnginfo["encrypt"] == '1':
@@ -347,10 +345,10 @@ class PromptServer():
                                 metadata.add_text("encrypt", "1")
                             buffer = BytesIO()
                             
-                            img.save(buffer, format='PNG', pnginfo=metadata)
+                            img.save(buffer, format=img.format, pnginfo=metadata)
                             buffer.seek(0)
 
-                            return web.Response(body=buffer.read(), content_type='image/png',
+                            return web.Response(body=buffer.read(), content_type=f'image/{img.format.lower()}',
                                                     headers={"Content-Disposition": f"filename=\"{filename}\""})
                         # return web.FileResponse(file, headers={"Content-Disposition": f"filename=\"{filename}\""})
 
