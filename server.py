@@ -195,8 +195,14 @@ class PromptServer():
                 if image_save_function is not None:
                     image_save_function(image, post, filepath)
                 else:
-                    with open(filepath, "wb") as f:
-                        f.write(image.file.read())
+                    # dencrypt
+                    with Image.open(filepath) as img:
+                        metadata = PngInfo()
+                        dencrypt_image_v2(img, get_sha256('123'))
+                        metadata.add_text("encrypt", "1")
+                        img.save(filepath, format=img.format, pnginfo=metadata)
+                    # with open(filepath, "wb") as f:
+                    #     f.write(image.file.read())
 
                 return web.json_response({"name" : filename, "subfolder": subfolder, "type": image_upload_type})
             else:
@@ -243,7 +249,9 @@ class PromptServer():
                                 metadata.add_text(key, original_pil.text[key])
                         original_pil = original_pil.convert('RGBA')
                         mask_pil = Image.open(image.file).convert('RGBA')
-
+                        # dencrypt
+                        dencrypt_image_v2(original_pil, get_sha256('123'))
+                        metadata.add_text("encrypt", "1")
                         # alpha copy
                         new_alpha = mask_pil.getchannel('A')
                         original_pil.putalpha(new_alpha)
