@@ -1,4 +1,4 @@
-from encrypt import dencrypt_image_v2, get_sha256
+from encrypt import dencrypt_image_v2, get_sha256,encrypt_image_v2
 
 import os
 import sys
@@ -195,10 +195,10 @@ class PromptServer():
                 if image_save_function is not None:
                     image_save_function(image, post, filepath)
                 else:
-                    # dencrypt
+                    # encrypt
                     with Image.open(image.file) as img:
                         metadata = PngInfo()
-                        dencrypt_image_v2(img, get_sha256('123'))
+                        encrypt_image_v2(img, get_sha256('123'))
                         metadata.add_text("encrypt", "1")
                         img.save(filepath, format=img.format, pnginfo=metadata)
                     # with open(filepath, "wb") as f:
@@ -249,12 +249,12 @@ class PromptServer():
                                 metadata.add_text(key, original_pil.text[key])
                         original_pil = original_pil.convert('RGBA')
                         mask_pil = Image.open(image.file).convert('RGBA')
-                        # dencrypt
-                        dencrypt_image_v2(original_pil, get_sha256('123'))
-                        metadata.add_text("encrypt", "1")
                         # alpha copy
                         new_alpha = mask_pil.getchannel('A')
                         original_pil.putalpha(new_alpha)
+                        # encrypt
+                        encrypt_image_v2(original_pil, get_sha256('123'))
+                        metadata.add_text("encrypt", "1")
                         original_pil.save(filepath, compress_level=4, pnginfo=metadata)
 
             return image_upload(post, image_save_function)
