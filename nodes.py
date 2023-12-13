@@ -1,4 +1,4 @@
-from encrypt import encrypt_image_v2, get_sha256
+from encrypt import encrypt_image_v2, get_sha256, dencrypt_image_v2
 
 import torch
 
@@ -1415,6 +1415,9 @@ class LoadImage:
     def load_image(self, image):
         image_path = folder_paths.get_annotated_filepath(image)
         i = Image.open(image_path)
+        pnginfo = i.info or {}
+        if 'encrypt' in pnginfo:
+            dencrypt_image_v2(i, get_sha256('123'))
         i = ImageOps.exif_transpose(i)
         image = i.convert("RGB")
         image = np.array(image).astype(np.float32) / 255.0
