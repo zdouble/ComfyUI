@@ -341,10 +341,10 @@ class PromptServer():
                             if 'encrypt' in pnginfo and pnginfo["encrypt"] == '1':
                                 dencrypt_image_v2(img, get_sha256('123'))
                             buffer = BytesIO()
-                            img.save(buffer, format='PNG', pnginfo=pnginfo)
+                            img.save(buffer, format=pnginfo['file_type'], pnginfo=pnginfo)
                             buffer.seek(0)
 
-                            return web.Response(body=buffer.read(), content_type=f'image/png',
+                            return web.Response(body=buffer.read(), content_type=f'{pnginfo["mime_type"]}',
                                                     headers={"Content-Disposition": f"filename=\"{filename}\""})
                         # return web.FileResponse(file, headers={"Content-Disposition": f"filename=\"{filename}\""})
 
