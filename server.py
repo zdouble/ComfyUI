@@ -288,6 +288,9 @@ class PromptServer():
                 if os.path.isfile(file):
                     if 'preview' in request.rel_url.query:
                         with Image.open(file) as img:
+                            pnginfo = img.info or {}
+                            if 'encrypt' in pnginfo and pnginfo["encrypt"] == '1':
+                                dencrypt_image_v2(img, get_sha256('123'))
                             preview_info = request.rel_url.query['preview'].split(';')
                             image_format = preview_info[0]
                             if image_format not in ['webp', 'jpeg'] or 'a' in request.rel_url.query.get('channel', ''):
@@ -331,6 +334,9 @@ class PromptServer():
 
                     elif channel == 'a':
                         with Image.open(file) as img:
+                            pnginfo = img.info or {}
+                            if 'encrypt' in pnginfo and pnginfo["encrypt"] == '1':
+                                dencrypt_image_v2(img, get_sha256('123'))
                             if img.mode == "RGBA":
                                 _, _, _, a = img.split()
                             else:
