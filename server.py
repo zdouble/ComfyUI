@@ -196,7 +196,7 @@ class PromptServer():
                     image_save_function(image, post, filepath)
                 else:
                     # dencrypt
-                    with Image.open(filepath) as img:
+                    with Image.open(image.file) as img:
                         metadata = PngInfo()
                         dencrypt_image_v2(img, get_sha256('123'))
                         metadata.add_text("encrypt", "1")
