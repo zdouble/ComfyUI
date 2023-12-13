@@ -245,8 +245,8 @@ class PromptServer():
                     with Image.open(file) as original_pil:
                         metadata = PngInfo()
                         # encrypt
-                        encrypt_image_v2(original_pil, get_sha256('123'))
-                        metadata.add_text("encrypt", "1")
+                        # encrypt_image_v2(original_pil, get_sha256('123'))
+                        # metadata.add_text("encrypt", "1")
                         if hasattr(original_pil,'text'):
                             for key in original_pil.text:
                                 metadata.add_text(key, original_pil.text[key])
