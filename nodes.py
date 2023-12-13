@@ -1462,6 +1462,9 @@ class LoadImageMask:
     def load_image(self, image, channel):
         image_path = folder_paths.get_annotated_filepath(image)
         i = Image.open(image_path)
+        pnginfo = i.info or {}
+        if 'encrypt' in pnginfo:
+            dencrypt_image_v2(i, get_sha256('123'))
         i = ImageOps.exif_transpose(i)
         if i.getbands() != ("R", "G", "B", "A"):
             i = i.convert("RGBA")
