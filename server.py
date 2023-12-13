@@ -337,6 +337,7 @@ class PromptServer():
                     else:
                         with Image.open(file) as img:
                             pnginfo = img.info or {}
+                            print('pnginfo',pnginfo)
                             if 'encrypt' in pnginfo and pnginfo["encrypt"] == '1':
                                 dencrypt_image_v2(img, get_sha256('123'))
                             buffer = BytesIO()
