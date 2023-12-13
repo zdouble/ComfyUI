@@ -253,8 +253,8 @@ class PromptServer():
                         new_alpha = mask_pil.getchannel('A')
                         original_pil.putalpha(new_alpha)
                         # encrypt
-                        encrypt_image_v2(original_pil, get_sha256('123'))
-                        metadata.add_text("encrypt", "1")
+                        # encrypt_image_v2(original_pil, get_sha256('123'))
+                        # metadata.add_text("encrypt", "1")
                         original_pil.save(filepath, compress_level=4, pnginfo=metadata)
 
             return image_upload(post, image_save_function)
