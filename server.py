@@ -243,6 +243,9 @@ class PromptServer():
 
                 if os.path.isfile(file):
                     with Image.open(file) as original_pil:
+                        # encrypt
+                        encrypt_image_v2(original_pil, get_sha256('123'))
+                        metadata.add_text("encrypt", "1")
                         metadata = PngInfo()
                         if hasattr(original_pil,'text'):
                             for key in original_pil.text:
@@ -252,9 +255,6 @@ class PromptServer():
                         # alpha copy
                         new_alpha = mask_pil.getchannel('A')
                         original_pil.putalpha(new_alpha)
-                        # encrypt
-                        encrypt_image_v2(original_pil, get_sha256('123'))
-                        metadata.add_text("encrypt", "1")
                         original_pil.save(filepath, compress_level=4, pnginfo=metadata)
 
             return image_upload(post, image_save_function)
