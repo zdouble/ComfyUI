@@ -335,7 +335,6 @@ class PromptServer():
                             return web.Response(body=alpha_buffer.read(), content_type='image/png',
                                                 headers={"Content-Disposition": f"filename=\"{filename}\""})
                     else:
-                        print('else')
                         with Image.open(file) as img:
                             pnginfo = img.info or {}
                             if 'encrypt' in pnginfo and pnginfo["encrypt"] == '1':
