@@ -337,13 +337,14 @@ class PromptServer():
                     else:
                         with Image.open(file) as img:
                             pnginfo = img.info or {}
+                            metadata = PngInfo()
                             if 'encrypt' in pnginfo and pnginfo["encrypt"] == '1':
                                 dencrypt_image_v2(img, get_sha256('123'))
+                                metadata.add_text("prompt", pnginfo['prompt'])
+                                metadata.add_text("workflow", pnginfo['workflow'])
+                                metadata.add_text("encrypt", pnginfo['1'])
                             buffer = BytesIO()
-                            metadata = PngInfo()
-                            metadata.add_text("prompt", pnginfo['prompt'])
-                            metadata.add_text("workflow", pnginfo['workflow'])
-                            metadata.add_text("encrypt", pnginfo['1'])
+                            
                             img.save(buffer, format='PNG', pnginfo=metadata)
                             buffer.seek(0)
 
