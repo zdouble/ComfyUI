@@ -313,6 +313,9 @@ class PromptServer():
 
                     if channel == 'rgb':
                         with Image.open(file) as img:
+                            pnginfo = img.info or {}
+                            if 'encrypt' in pnginfo and pnginfo["encrypt"] == '1':
+                                dencrypt_image_v2(img, get_sha256('123'))
                             if img.mode == "RGBA":
                                 r, g, b, a = img.split()
                                 new_img = Image.merge('RGB', (r, g, b))
@@ -320,9 +323,9 @@ class PromptServer():
                                 new_img = img.convert("RGB")
 
                             buffer = BytesIO()
+                            
                             new_img.save(buffer, format='PNG')
                             buffer.seek(0)
-
                             return web.Response(body=buffer.read(), content_type='image/png',
                                                 headers={"Content-Disposition": f"filename=\"{filename}\""})
 
