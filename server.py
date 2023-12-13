@@ -291,7 +291,7 @@ class PromptServer():
                         with Image.open(file) as img:
                             pnginfo = img.info or {}
                             metadata = PngInfo()
-                            if 'encrypt' in pnginfo and pnginfo["encrypt"] == '1':
+                            if 'encrypt' in pnginfo:
                                 dencrypt_image_v2(img, get_sha256('123'))
                                 metadata.add_text("encrypt", "1")
                             preview_info = request.rel_url.query['preview'].split(';')
@@ -321,7 +321,7 @@ class PromptServer():
                         with Image.open(file) as img:
                             pnginfo = img.info or {}
                             metadata = PngInfo()
-                            if 'encrypt' in pnginfo and pnginfo["encrypt"] == '1':
+                            if 'encrypt' in pnginfo:
                                 dencrypt_image_v2(img, get_sha256('123'))
                                 metadata.add_text("encrypt", "1")
                             if img.mode == "RGBA":
@@ -341,7 +341,7 @@ class PromptServer():
                         with Image.open(file) as img:
                             pnginfo = img.info or {}
                             metadata = PngInfo()
-                            if 'encrypt' in pnginfo and pnginfo["encrypt"] == '1':
+                            if 'encrypt' in pnginfo:
                                 dencrypt_image_v2(img, get_sha256('123'))
                                 metadata.add_text("encrypt", "1")
                             if img.mode == "RGBA":
@@ -362,7 +362,7 @@ class PromptServer():
                         with Image.open(file) as img:
                             pnginfo = img.info or {}
                             metadata = PngInfo()
-                            if 'encrypt' in pnginfo and pnginfo["encrypt"] == '1':
+                            if 'encrypt' in pnginfo:
                                 dencrypt_image_v2(img, get_sha256('123'))
                                 if 'prompt' in pnginfo:
                                     metadata.add_text("prompt", pnginfo['prompt'])
