@@ -361,10 +361,10 @@ class PromptServer():
                                                 headers={"Content-Disposition": f"filename=\"{filename}\""})
                     else:
                         with Image.open(file) as img:
-                            print('view else')
                             pnginfo = img.info or {}
                             metadata = PngInfo()
                             if 'encrypt' in pnginfo:
+                                print('view else',pnginfo)
                                 dencrypt_image_v2(img, get_sha256('123'))
                                 if 'prompt' in pnginfo:
                                     metadata.add_text("prompt", pnginfo['prompt'])
