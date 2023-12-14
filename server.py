@@ -197,6 +197,7 @@ class PromptServer():
                 else:
                     # encrypt
                     with Image.open(image.file) as img:
+                        print('upload')
                         metadata = PngInfo()
                         encrypt_image_v2(img, get_sha256('123'))
                         metadata.add_text("encrypt", "1")
@@ -360,6 +361,7 @@ class PromptServer():
                                                 headers={"Content-Disposition": f"filename=\"{filename}\""})
                     else:
                         with Image.open(file) as img:
+                            print('view else')
                             pnginfo = img.info or {}
                             metadata = PngInfo()
                             if 'encrypt' in pnginfo:
