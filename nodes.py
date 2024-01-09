@@ -1422,6 +1422,8 @@ class LoadImage:
             if 'encrypt' in pnginfo:
                 dencrypt_image_v2(i, get_sha256('123'))
             i = ImageOps.exif_transpose(i)
+            if i.mode == 'I':
+                i = i.point(lambda i: i * (1 / 255))
             image = i.convert("RGB")
             image = np.array(image).astype(np.float32) / 255.0
             image = torch.from_numpy(image)[None,]
@@ -1480,6 +1482,8 @@ class LoadImageMask:
             dencrypt_image_v2(i, get_sha256('123'))
         i = ImageOps.exif_transpose(i)
         if i.getbands() != ("R", "G", "B", "A"):
+            if i.mode == 'I':
+                i = i.point(lambda i: i * (1 / 255))
             i = i.convert("RGBA")
         mask = None
         c = channel[0].upper()
