@@ -14,7 +14,8 @@
 			await app.setup();
 			window.app = app;
 			window.graph = app.graph;
-			window.onerror = () => {
+			window.onerror = (e) => {
+				console.log('e',e);
 				app.setup()
 			}
 		</script>
