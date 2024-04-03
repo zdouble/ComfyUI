@@ -709,7 +709,11 @@ export class ComfyApp {
 							let imgWidth = ratio * img.width;
 							let imgX = col * cellWidth + shiftX + (cellWidth - imgWidth)/2;
 
-							ctx.drawImage(img, imgX+cell_padding, imgY+cell_padding, imgWidth-cell_padding*2, imgHeight-cell_padding*2);
+							try {
+								ctx.drawImage(img, imgX+cell_padding, imgY+cell_padding, imgWidth-cell_padding*2, imgHeight-cell_padding*2);
+							} catch (error) {
+								
+							}
 							if(!compact_mode) {
 								// rectangle cell and border line style
 								ctx.strokeStyle = "#8F8F8F";
