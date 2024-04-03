@@ -70,7 +70,7 @@ class ComfyApi extends EventTarget {
 		});
 
 		this.socket.addEventListener("error", () => {
-			// if (this.socket) this.socket.close();
+			if (this.socket) this.socket.close();
 			if (!isReconnect && !opened) {
 				this.#pollQueue();
 			}
@@ -82,8 +82,8 @@ class ComfyApi extends EventTarget {
 				this.#createSocket(true);
 			}, 300);
 			if (opened) {
-				this.dispatchEvent(new CustomEvent("status", { detail: null }));
-				this.dispatchEvent(new CustomEvent("reconnecting"));
+				// this.dispatchEvent(new CustomEvent("status", { detail: null }));
+				// this.dispatchEvent(new CustomEvent("reconnecting"));
 			}
 		});
 
