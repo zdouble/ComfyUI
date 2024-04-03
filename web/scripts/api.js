@@ -82,8 +82,8 @@ class ComfyApi extends EventTarget {
 				this.#createSocket(true);
 			}, 300);
 			if (opened) {
-				// this.dispatchEvent(new CustomEvent("status", { detail: null }));
-				// this.dispatchEvent(new CustomEvent("reconnecting"));
+				this.dispatchEvent(new CustomEvent("status", { detail: null }));
+				this.dispatchEvent(new CustomEvent("reconnecting"));
 			}
 		});
 
