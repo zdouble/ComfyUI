@@ -1974,6 +1974,7 @@ def init_custom_nodes():
         "nodes_morphology.py",
         "nodes_stable_cascade.py",
         "nodes_differential_diffusion.py",
+        "nodes_ip2p.py",
     ]
 
     import_failed = []
