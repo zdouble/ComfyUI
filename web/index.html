@@ -16,7 +16,9 @@
 			window.graph = app.graph;
 			window.onerror = (e) => {
 				console.log('e',e);
-				//app.setup()
+				if (e?.indexOf?.('drawImage')!== '-1') {
+					app.setup()
+				}
 			}
 		</script>
 	</head>
