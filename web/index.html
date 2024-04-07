@@ -14,14 +14,6 @@
 			await app.setup();
 			window.app = app;
 			window.graph = app.graph;
-			window.onerror = (e) => {
-				console.log('e',e);
-				if (e?.indexOf?.('drawImage')!== '-1') {
-					app.graph.clear()
-					app.clean()
-					app.setup()
-				}
-			}
 		</script>
 	</head>
 	<body class="litegraph">
