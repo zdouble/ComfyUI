@@ -12,7 +12,7 @@ import time
 import random
 import logging
 
-from PIL import Image, ImageOps, ImageSequence
+from PIL import Image, ImageOps, ImageSequence, ImageFile
 from PIL.PngImagePlugin import PngInfo
 
 import numpy as np
@@ -1468,7 +1468,17 @@ class LoadImage:
             pnginfo = i.info or {}
             if 'encrypt' in pnginfo:
                 dencrypt_image_v2(i, get_sha256('123'))
-            i = ImageOps.exif_transpose(i)
+            prev_value = None
+            try:
+                i = ImageOps.exif_transpose(i)
+            except OSError:
+                prev_value = ImageFile.LOAD_TRUNCATED_IMAGES
+                ImageFile.LOAD_TRUNCATED_IMAGES = True
+                i = ImageOps.exif_transpose(i)
+            finally:
+                if prev_value is not None:
+                    ImageFile.LOAD_TRUNCATED_IMAGES = prev_value
+
             if i.mode == 'I':
                 i = i.point(lambda i: i * (1 / 255))
             image = i.convert("RGB")
