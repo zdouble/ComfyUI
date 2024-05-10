@@ -1460,11 +1460,12 @@ class LoadImage:
     def load_image(self, image):
         image_path = folder_paths.get_annotated_filepath(image)
         
-        img = node_helpers.open_image(image_path)
+        img = node_helpers.pillow(Image.open, image_path)
         
         output_images = []
         output_masks = []
         for i in ImageSequence.Iterator(img):
+<<<<<<< HEAD
             pnginfo = i.info or {}
             if 'encrypt' in pnginfo:
                 dencrypt_image_v2(i, get_sha256('123'))
@@ -1478,6 +1479,9 @@ class LoadImage:
             finally:
                 if prev_value is not None:
                     ImageFile.LOAD_TRUNCATED_IMAGES = prev_value
+=======
+            i = node_helpers.pillow(ImageOps.exif_transpose, i)
+>>>>>>> 0fecfd2b1a2794b77277c7e256c84de54a63d860
 
             if i.mode == 'I':
                 i = i.point(lambda i: i * (1 / 255))
@@ -1537,7 +1541,8 @@ class LoadImageMask:
         pnginfo = i.info or {}
         if 'encrypt' in pnginfo:
             dencrypt_image_v2(i, get_sha256('123'))
-        i = ImageOps.exif_transpose(i)
+        i = node_helpers.pillow(Image.open, image_path)
+        i = node_helpers.pillow(ImageOps.exif_transpose, i)
         if i.getbands() != ("R", "G", "B", "A"):
             if i.mode == 'I':
                 i = i.point(lambda i: i * (1 / 255))
